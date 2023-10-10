@@ -104,14 +104,6 @@ export default function Home() {
 
 
 
-
-
-
-
-
-
-
-
   useEffect(() => {
 
     getTrendingMovies()
