@@ -1,0 +1,14 @@
+ api Key : cffed22b0a485ebb8a8ade2cd4bcd5f1
+
+
+Trending api : `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=.......`
+
+ movieDetails api : `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=.......&language=en-US`
+
+ people api : `https://api.themoviedb.org/3/person/popular?api_key=.......&language=en-US&page=${page}`
+
+ movies api : https://api.themoviedb.org/3/discover/movie?api_key=.......&language=en- US&sort_by=popularity.desc&include_adult=false&include_video=true&page=${page}`
+
+ movies api : https://api.themoviedb.org/3/discover/tv?api_key=.......&language=en-US&sort_by  =popularity.desc&include_adult=false&include_video=true&page=${page}`
+
+ img path : 'https://image.tmdb.org/t/p/w500'
