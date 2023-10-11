@@ -147,13 +147,13 @@ export default function Home() {
 
 
 </> }
-          
+  
 
       
       <div className="container mx-auto my-16 ">
 
 
-
+      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus aut dicta reiciendis magnam adipisci quis!</p>
 
 
 {/* -------------------------------------------------------------------------------------------------------------------------- */}

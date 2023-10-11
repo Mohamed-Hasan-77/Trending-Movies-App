@@ -85,6 +85,7 @@ export default function App() {
   <div className="darkMod dark:bg-black  transition-all duration-500">
   <RouterProvider router={router}/>
 
+    
   </div>
   </>
 }

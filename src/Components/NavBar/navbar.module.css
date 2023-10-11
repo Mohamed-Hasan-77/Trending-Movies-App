@@ -90,3 +90,9 @@
 
     }
 }
+
+
+
+.checkMenu:checked+.NavMenu {
+    display: block;
+}
