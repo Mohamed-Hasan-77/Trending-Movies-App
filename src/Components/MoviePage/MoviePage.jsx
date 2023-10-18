@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import LoadingScreen from '../MaterialUICom/LoadingScreen/LoadingScreen';
 import LoadingScreenTwo from '../LoadingScreenTwo/LoadingScreenTwo';
+import YouTube from 'react-youtube';
 
 export default function MoviePage() {
 
 
     const [movie, setMovie] = useState(null)
     const [recommend, setRecommend] = useState(null)
+    const [trailer, setTrailer] = useState(null)
 
     
 
@@ -32,6 +34,22 @@ export default function MoviePage() {
         }
     }
 
+
+
+    async function movieTrailer() {
+    
+        try{
+        let {data} = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`, 
+        {params: {
+            api_key: 'cffed22b0a485ebb8a8ade2cd4bcd5f1',
+        }},  )
+        // console.log(data);
+        setTrailer(data.results[1])
+
+        }catch(err) {
+        // console.error('Error:', err);
+        }
+    }
 
 
     async function getRecommendedMovies() {
@@ -59,10 +77,35 @@ export default function MoviePage() {
         }, 100)
     }
 
+
+        const opts = {
+            height: '400',
+            width: '100%',
+            playerVars: {
+            // https://developers.google.com/youtube/player_parameters
+            },
+        };
+
+
+
+    function trailerToggle() {
+        let trailerPop = document.querySelector('.trailerPopUp');
+        trailerPop.classList.replace('hidden', 'flex');
+    }
+
+    function trailerToggleClose() {
+        let trailerPop = document.querySelector('.trailerPopUp');
+        trailerPop.classList.replace('flex', 'hidden');
+    }
+
     useEffect(function() {
         movieData()
         getRecommendedMovies()
+        movieTrailer()
+
     } ,[])
+
+
 
     return <>
 
@@ -111,7 +154,12 @@ export default function MoviePage() {
                         <p className=' text-sm text-gray-400'> {movie.tagline}  </p>
                     </div>
                     <div className="rating flex items-center  space-x-5 mt-4">
-                        <div className="trailer px-2 py-1 border border-black hover:bg-darkTheme hover:text-white cursor-pointer transition-all duration-300"> <a target='_blank' href={movie.homepage}> <i class="fa-solid fa-video"></i>  Trailer </a>  </div>
+                        <div onClick={trailerToggle} className="trailerBtn px-2 py-1 border border-black hover:bg-darkTheme hover:text-white cursor-pointer transition-all duration-300">  <i class="fa-solid fa-video"></i>  Trailer   </div>
+
+
+
+
+
                         <p className='font-bold' > IMDB : <span className=' text-themeColor'> {Math.round(movie.vote_average)} <i class="fa-solid fa-star"></i></span> </p>
                     </div>
                     <p className='desc'>
@@ -142,12 +190,30 @@ export default function MoviePage() {
                     </div>
                 </div>
                 
+
+
+
                 
             </div>
         </div>
         
         
-        
+        <div className="trailerPopUp hidden absolute w-screen h-screen bg-navbarDark  backdrop-blur-sm left-0 top-0  justify-center items-center  z-50">
+                            <div className="inner relative w-3/4 z-50">
+                                {trailer ? <>
+
+                                    <YouTube
+                                        videoId={trailer.key}              
+                                        id={trailer.id}  
+                                        opts={opts}
+                                        />
+
+                                    </> :  <LoadingScreen/> }
+                                    <div onClick={trailerToggleClose} className="close p-1 bg-red-600  text-white cursor-pointer absolute -top-5 -right-5 rounded-full w-7 h-7 flex justify-center items-center "> <i class="fa-solid fa-xmark"></i> </div>
+                            </div>
+
+                            
+                </div>
         
         
         </> : <LoadingScreenTwo/> }
