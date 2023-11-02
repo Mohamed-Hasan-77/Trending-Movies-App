@@ -9,6 +9,9 @@ export default function MoviePage() {
   const [movie, setMovie] = useState(null);
   const [recommend, setRecommend] = useState(null);
   const [trailer, setTrailer] = useState(null);
+  //   const [open, setOpen] = useState(false);
+
+  //   let menuRef = useRef();
 
   const { id } = useParams();
   // https://api.themoviedb.org/3/movie/968051?language=en-US
@@ -75,7 +78,7 @@ export default function MoviePage() {
     height: "400",
     width: "100%",
     playerVars: {
-      // https://developers.google.com/youtube/player_parameters
+      autoplay: 0,
     },
   };
 
@@ -91,6 +94,11 @@ export default function MoviePage() {
   function trailerToggleClose() {
     let trailerPop = document.querySelector(".trailerPopUp");
     trailerPop.classList.replace("flex", "hidden");
+    let iframe = document.getElementsByTagName("iframe")[0].contentWindow;
+    iframe.postMessage(
+      '{"event":"command","func":"' + "pauseVideo" + '","args":""}',
+      "*"
+    );
   }
 
   useEffect(function () {
@@ -109,6 +117,16 @@ export default function MoviePage() {
               className="w-full h-full object-cover absolute top-0 left-0 z-0  "
               alt="wallpaper"
             />
+
+            {/* <YouTube
+              className="w-full h-full object-cover absolute top-0 left-0 z-0"
+              videoId={trailer.key}
+              id={trailer.id}
+              opts={opts}
+              onStateChange={() => {
+                close();
+              }}
+            /> */}
             <div className="overlay top-0 left-0 absolute w-full h-full bg-overlayWhite hover:bg-navbarDark dark:bg-overlayDark py-14  z-1 backdrop-blur-sm   flex justify-center items-center  ">
               <div className="play rounded-full bg-gray-900 w-20 h-20 flex justify-center items-center cursor-pointer hover:bg-gray-800 ">
                 <i class="fa-solid fa-play text-white text-4xl  "></i>
@@ -131,22 +149,18 @@ export default function MoviePage() {
                     <p className=" text-sm text-gray-400">{movie.tagline} </p>
                   </div>
                   <h3>
-                    {" "}
                     <span className=" text-themeColor ">
-                      {" "}
-                      {movie.vote_average} /{" "}
-                    </span>{" "}
+                      {movie.vote_average} /
+                    </span>
                     <span className="text-sm"> {movie.vote_count} Voted </span>
                   </h3>
                   <hr className="bar h-1 bg-darkTheme dark:bg-white w-full"></hr>
                   <div className="buttons flex justify-around md:justify-between gap-3 ">
                     <button className="px-2 py-1 bg-themeColor_purple text-white w-1/2 hover:bg-themeColor transition-all duration-300 ">
-                      {" "}
-                      Like{" "}
+                      Like
                     </button>
                     <button className="px-2 py-1 bg-themeColor_red text-white w-1/2 hover:bg-gray-800 transition-all duration-300 ">
-                      {" "}
-                      Dislike{" "}
+                      Dislike
                     </button>
                   </div>
                 </div>
@@ -155,16 +169,14 @@ export default function MoviePage() {
               <div className=" w-full md:w-5/6   md:space-y-3 ">
                 <div className="watch-add flex justify-between items-start md:items-center  ">
                   <button className="px-4 py-2 bg-themeColor_purple  text-white hover:bg-gray-800 transition-all duration-300 rounded-full">
-                    {" "}
-                    <i class="fa-solid fa-play"></i>{" "}
+                    <i class="fa-solid fa-play"></i>
                     <a target="_blank" href={movie.homepage}>
                       {" "}
                       Watch Now{" "}
-                    </a>{" "}
+                    </a>
                   </button>
                   <button className="px-4 py-2 bg-themeColor_red text-white hover:bg-gray-800 transition-all duration-300  rounded-full ">
-                    {" "}
-                    <i class="fa-solid fa-heart"></i> add To fav{" "}
+                    <i class="fa-solid fa-heart"></i> add To fav
                   </button>
                 </div>
                 <div className="movieTitle hidden md:block">
@@ -176,18 +188,15 @@ export default function MoviePage() {
                     onClick={trailerToggle}
                     className="trailerBtn px-2 py-1 border border-black hover:bg-darkTheme hover:text-white cursor-pointer transition-all duration-300"
                   >
-                    {" "}
-                    <i class="fa-solid fa-video"></i> Trailer{" "}
+                    <i class="fa-solid fa-video"></i> Trailer
                   </div>
 
                   <p className="font-bold">
-                    {" "}
-                    IMDB :{" "}
+                    IMDB :
                     <span className=" text-themeColor">
-                      {" "}
-                      {Math.round(movie.vote_average)}{" "}
+                      {Math.round(movie.vote_average)}
                       <i class="fa-solid fa-star"></i>
-                    </span>{" "}
+                    </span>
                   </p>
                 </div>
                 <p className="desc">{movie.overview}</p>
@@ -195,46 +204,38 @@ export default function MoviePage() {
                 <div className="moreInfo flex justify-between ">
                   <div className="col-1 w-1/2">
                     <p>
-                      <span className="font-bold"> Release Date </span> :{" "}
+                      <span className="font-bold"> Release Date </span> :
                       {movie.release_date}
                     </p>
                     <p>
-                      {" "}
-                      <span className="font-bold"> Genre </span> :{" "}
+                      <span className="font-bold"> Genre </span> :
                       {movie.genres?.map((genre, idx) => {
                         return <span key={idx}> {genre.name} , </span>;
-                      })}{" "}
+                      })}
                     </p>
                     <p>
-                      {" "}
-                      <span className="font-bold"> Language </span> :{" "}
+                      <span className="font-bold"> Language </span> :
                       {movie.spoken_languages?.map((lang, idx) => {
                         return <span key={idx}> {lang.english_name} , </span>;
-                      })}{" "}
+                      })}
                     </p>
                   </div>
                   <div className="col-2 w-1/2 ">
                     <p>
-                      <span className="font-bold"> Duration </span> :{" "}
+                      <span className="font-bold"> Duration </span> :
                       {movie.runtime}
                     </p>
                     <p>
-                      {" "}
-                      <span className="font-bold"> Country </span> :{" "}
+                      <span className="font-bold"> Country </span> :
                       {movie.production_countries?.map((country, idx) => {
                         return <span key={idx}> {country.name} , </span>;
-                      })}{" "}
+                      })}
                     </p>
                     <p>
-                      {" "}
-                      <span className="font-bold">
-                        {" "}
-                        Production Companies{" "}
-                      </span>{" "}
-                      :{" "}
+                      <span className="font-bold">Production Companies</span>:
                       {movie.production_companies?.map((company, idx) => {
                         return <span key={idx}> {company.name} , </span>;
-                      })}{" "}
+                      })}
                     </p>
                   </div>
                 </div>
@@ -249,14 +250,13 @@ export default function MoviePage() {
                   <YouTube videoId={trailer.key} id={trailer.id} opts={opts} />
                 </>
               ) : (
-                <LoadingScreen />
+                <></>
               )}
               <div
                 onClick={trailerToggleClose}
                 className="close p-1 bg-red-600  text-white cursor-pointer absolute -top-5 -right-5 rounded-full w-7 h-7 flex justify-center items-center "
               >
-                {" "}
-                <i class="fa-solid fa-xmark"></i>{" "}
+                <i class="fa-solid fa-xmark"></i>
               </div>
             </div>
           </div>
@@ -317,34 +317,31 @@ export default function MoviePage() {
                             </div>
 
                             <span className=" text-white text-xs font-bold backdrop-blur-lg px-3 py-1 rounded m-1 absolute top-0 right-0">
-                              {" "}
-                              {Math.round(movie.vote_average)}{" "}
-                              <i class="fa-solid fa-star ml-1 text-yellow-400"></i>{" "}
+                              {Math.round(movie.vote_average)}
+                              <i class="fa-solid fa-star ml-1 text-yellow-400"></i>
                             </span>
 
                             <div className="movie-desc bg-white dark:bg-darkTheme px-2  py-3 text-xs  dark:text-white rounded-b  ">
                               {movie.title ? (
                                 <>
                                   <h4 className="font-bold">
-                                    {" "}
                                     {movie.title.split(" ").length > 3
                                       ? movie.title
                                           .split(" ")
                                           .slice(0, 3)
                                           .join(" ") + "..."
-                                      : movie.title}{" "}
+                                      : movie.title}
                                   </h4>
                                 </>
                               ) : (
                                 <>
                                   <h4 className="font-bold">
-                                    {" "}
                                     {movie.name.split(" ").length > 3
                                       ? movie.name
                                           .split(" ")
                                           .slice(0, 3)
                                           .join(" ") + "..."
-                                      : movie.name}{" "}
+                                      : movie.name}
                                   </h4>
                                 </>
                               )}
@@ -352,31 +349,27 @@ export default function MoviePage() {
                                 {movie.release_date ? (
                                   <>
                                     <span>
-                                      {" "}
                                       {movie.release_date
                                         ?.split("-")
                                         .slice(0, 1)
-                                        .join("")}{" "}
+                                        .join("")}
                                     </span>
                                   </>
                                 ) : (
                                   <>
                                     <span>
-                                      {" "}
                                       {movie.first_air_date
                                         ?.split("-")
                                         .slice(0, 1)
-                                        .join("")}{" "}
+                                        .join("")}
                                     </span>
                                     np
                                   </>
                                 )}
                                 <span>
-                                  {" "}
                                   | {movie.original_language?.toUpperCase()}
                                 </span>
                                 <span className=" bg-themeColor_red px-1 py-1 text-white rounded">
-                                  {" "}
                                   {movie.media_type}
                                 </span>
                               </div>

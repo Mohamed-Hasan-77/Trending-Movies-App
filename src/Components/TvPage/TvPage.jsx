@@ -91,6 +91,12 @@ export default function TvPage() {
   function trailerToggleClose() {
     let trailerPop = document.querySelector(".trailerPopUp");
     trailerPop.classList.replace("flex", "hidden");
+
+    let iframe = document.getElementsByTagName("iframe")[0].contentWindow;
+    iframe.postMessage(
+      '{"event":"command","func":"' + "pauseVideo" + '","args":""}',
+      "*"
+    );
   }
 
   useEffect(function () {
